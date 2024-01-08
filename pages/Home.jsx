@@ -1,12 +1,18 @@
-import { useState } from "react"
+import React from "react"
+import { useNavigate } from "react-router-dom"
 import OpenAI from "openai"
+import { ResponseContext } from "/index"
 
 export default function Home() {
-    const [favoriteInput, setFavoriteInput] = useState("Alien because it's still scary no matter how many times I watch it.")
-    const [recentnessInput, setRecentnessInput] = useState("I want to watch something made before 1990.")
-    const [moodInput, setMoodInput] = useState("I want something fun.")
-    const [isLooking, setIsLooking] = useState(false)
+    const [favoriteInput, setFavoriteInput] = React.useState("Alien because it's still scary no matter how many times I watch it.")
+    const [recentnessInput, setRecentnessInput] = React.useState("I want to watch something made before 1990.")
+    const [moodInput, setMoodInput] = React.useState("I want something fun.")
+    const [isLooking, setIsLooking] = React.useState(false)
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY
+    const {response, setResponseFromChild } = React.useContext(ResponseContext)
+    // const [response, setResponse] = value
+    const navigate = useNavigate()
+    // console.log("value",value)
     
     const handleFavoriteChange = event => {
         setFavoriteInput(event.target.value)
@@ -20,8 +26,9 @@ export default function Home() {
 
     async function fetchRecommendation(favoriteInput, recentnessInput, moodInput) {
         setIsLooking(true)
-        const input = `FAVORITE:${favoriteInput}  RECENTNESS:${recentnessInput}  MOOD:${moodInput}`
-        console.log(input)
+        const input = `FAVORITE:${favoriteInput} RECENTNESS:${recentnessInput} MOOD:${moodInput}`
+        
+        console.log("fetching")
         try{
             const messages = [
                 {
@@ -45,7 +52,10 @@ export default function Home() {
                 temperature: 1.1
             })
             console.log(response.choices[0].message.content)
+            // setResponse(response.choices[0].message.content)
+            // console.log("response", response)
             setIsLooking(false)
+            navigate("/recommendation")
         } catch(err) {
             console.log("Error: ", err)
             setIsLooking(false)
