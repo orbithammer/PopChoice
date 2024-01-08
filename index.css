@@ -45,6 +45,7 @@ h2 {
 
 .app-screen textarea {
     border: none;
+    resize: none;
     border-radius: 0.625rem;
     background: #3B4877;
     font-family: inherit;
@@ -52,4 +53,19 @@ h2 {
     font-weight: 300;
     padding: 0.75rem;
     color: #fff;
+}
+
+.app-screen textarea:first-of-type {
+    min-height: 5.5rem;
+}
+
+.app-screen button {
+    color: #000C36;
+    font-family: inherit;
+    font-size: 1.875rem;
+    font-weight: 700;
+    border-radius: 0.625rem;
+    background-color: #51E08A;
+    height: 4.4375rem;
+    margin-top: 2.87rem;
 }
