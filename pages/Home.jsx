@@ -1,7 +1,8 @@
 import React from "react"
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 import OpenAI from "openai"
-import { ResponseContext } from "/index"
+// import { ResponseContext } from "/index"
+import { useOutletContext } from "react-router-dom"
 
 export default function Home() {
     const [favoriteInput, setFavoriteInput] = React.useState("Alien because it's still scary no matter how many times I watch it.")
@@ -9,10 +10,14 @@ export default function Home() {
     const [moodInput, setMoodInput] = React.useState("I want something fun.")
     const [isLooking, setIsLooking] = React.useState(false)
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY
-    const {response, setResponseFromChild } = React.useContext(ResponseContext)
+    const {response, setResponse} = useOutletContext()
+    // console.log(response)
+    // const {response, setResponseFromChild } = React.useContext(ResponseContext)
+    // const value = React.useContext(ResponseContext)
     // const [response, setResponse] = value
-    const navigate = useNavigate()
     // console.log("value",value)
+    // console.log("setResponseFromChild", setResponseFromChild)
+    // const navigate = useNavigate()
     
     const handleFavoriteChange = event => {
         setFavoriteInput(event.target.value)
@@ -23,7 +28,7 @@ export default function Home() {
     const handleMoodChange = event => {
         setMoodInput(event.target.value)
     }
-
+    console.log("home 2")
     async function fetchRecommendation(favoriteInput, recentnessInput, moodInput) {
         setIsLooking(true)
         const input = `FAVORITE:${favoriteInput} RECENTNESS:${recentnessInput} MOOD:${moodInput}`
@@ -52,10 +57,10 @@ export default function Home() {
                 temperature: 1.1
             })
             console.log(response.choices[0].message.content)
-            // setResponse(response.choices[0].message.content)
-            // console.log("response", response)
+            setResponse(response.choices[0].message.content)
+            // console.log("response state", response)
             setIsLooking(false)
-            navigate("/recommendation")
+            // navigate("/recommendation")
         } catch(err) {
             console.log("Error: ", err)
             setIsLooking(false)
@@ -66,16 +71,19 @@ export default function Home() {
             <h2>What's your favorite movie and why?</h2>
             <textarea 
                 value={favoriteInput} 
+                // name="favorite"
                 onChange={handleFavoriteChange} 
                 placeholder="The Shawshank Redemption because it taught me to never give up hope no matter how hard life gets" />
             <h2>Are you in the mood for something new or a classic?</h2>
             <textarea 
                 value={recentnessInput} 
+                name="recentness"
                 onChange={handleRecentnessChange} 
                 placeholder="I want to watch movies that were released after 1990" />
             <h2>Do you wanna have fun or do you want something serious?</h2>
             <textarea 
                 value={moodInput} 
+                name="mood"
                 onChange={handleMoodChange} 
                 placeholder="I want to watch something stupid and fun" />
             <button 

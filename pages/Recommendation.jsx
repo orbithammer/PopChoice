@@ -1,8 +1,8 @@
 import React from "react"
-import {ResponseContext} from "/index"
+// import {ResponseContext} from "/index"
 
 export default function Recommendation() {
-    const value = React.useContext(ResponseContext)
+    // const value = React.useContext(ResponseContext)
     // console.log(value)
     return (
         <>
