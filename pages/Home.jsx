@@ -1,23 +1,21 @@
 import React from "react"
-// import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import OpenAI from "openai"
 // import { ResponseContext } from "/index"
 import { useOutletContext } from "react-router-dom"
 
 export default function Home() {
     const [favoriteInput, setFavoriteInput] = React.useState("Alien because it's still scary no matter how many times I watch it.")
-    const [recentnessInput, setRecentnessInput] = React.useState("I want to watch something made before 1990.")
+    const [recentnessInput, setRecentnessInput] = React.useState("I want to watch something made before 2022.")
     const [moodInput, setMoodInput] = React.useState("I want something fun.")
     const [isLooking, setIsLooking] = React.useState(false)
+    // const [response, setResponse] = React.useState("default response")
+    // const [imdbId, setImbdId] = React.useState("")
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY
-    const {response, setResponse} = useOutletContext()
-    // console.log(response)
-    // const {response, setResponseFromChild } = React.useContext(ResponseContext)
-    // const value = React.useContext(ResponseContext)
-    // const [response, setResponse] = value
-    // console.log("value",value)
-    // console.log("setResponseFromChild", setResponseFromChild)
-    // const navigate = useNavigate()
+    const {recommendation, setRecommendation} = useOutletContext()
+    const imdbIdRegex = new RegExp("tt[0-9]+")
+
+    const navigate = useNavigate()
     
     const handleFavoriteChange = event => {
         setFavoriteInput(event.target.value)
@@ -28,7 +26,22 @@ export default function Home() {
     const handleMoodChange = event => {
         setMoodInput(event.target.value)
     }
-    console.log("home 2")
+
+    async function fetchMovieInfo(imdbId) {
+        const res = await fetch(`https://www.omdbapi.com/?i=${imdbId}&type=movie&apikey=1d92d023`)
+        const data = await res.json()
+        console.log("data",data)
+        const { Title, Year, Poster, Plot} = await data
+        console.log(Title, Year, Poster, Plot)
+        setRecommendation({
+            title: Title,
+            year: Year,
+            poster: Poster,
+            plot: Plot
+        })
+        console.log("home recommendation state", recommendation)
+    }
+
     async function fetchRecommendation(favoriteInput, recentnessInput, moodInput) {
         setIsLooking(true)
         const input = `FAVORITE:${favoriteInput} RECENTNESS:${recentnessInput} MOOD:${moodInput}`
@@ -38,7 +51,7 @@ export default function Home() {
             const messages = [
                 {
                     role: "system",
-                    content: "You are a movie expert. You will be given 3 pieces of info: the user's favorite move, the time period they would like to watch a movie from, and the mood of the movie. Depending on the input, you recommend movies to the user and tell a description of the recommendation. End your response with the IMDB ID number. Limit your response to 30 words."
+                    content: "You are a movie expert. You will be given 3 pieces of info: the user's favorite move, the time period they would like to watch a movie from, and the mood of the movie. Depending on the input, you recommend a rare, independent, or underrated movie that the user might not have heard of. Your response will be the IMDB ID only. Do not recommend the same movie as the user's favorite movie."
                 },
                 {
                     role: "user",
@@ -54,13 +67,18 @@ export default function Home() {
             const response = await openai.chat.completions.create({
                 model: "gpt-3.5-turbo",
                 messages,
-                temperature: 1.1
+                temperature: 0
             })
-            console.log(response.choices[0].message.content)
-            setResponse(response.choices[0].message.content)
-            // console.log("response state", response)
+            // console.log(response.choices[0].message.content)
+            const rawResponse = response.choices[0].message.content
+            console.log("rawResponse", rawResponse)
+            const imdbId = rawResponse.match(imdbIdRegex)[0]
+            console.log("imdbId", imdbId)
+            // setImbdId(rawImbdId)
+            // console.log("imbdId",imdbId)
+            await fetchMovieInfo(imdbId)
             setIsLooking(false)
-            // navigate("/recommendation")
+            navigate("/recommendation")
         } catch(err) {
             console.log("Error: ", err)
             setIsLooking(false)
@@ -71,7 +89,7 @@ export default function Home() {
             <h2>What's your favorite movie and why?</h2>
             <textarea 
                 value={favoriteInput} 
-                // name="favorite"
+                name="favorite"
                 onChange={handleFavoriteChange} 
                 placeholder="The Shawshank Redemption because it taught me to never give up hope no matter how hard life gets" />
             <h2>Are you in the mood for something new or a classic?</h2>
