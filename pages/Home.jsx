@@ -67,7 +67,8 @@ export default function Home() {
             const response = await openai.chat.completions.create({
                 model: "gpt-3.5-turbo",
                 messages,
-                temperature: 0
+                temperature: 0.5,
+                frequency_penalty: 0.5
             })
             // console.log(response.choices[0].message.content)
             const rawResponse = response.choices[0].message.content

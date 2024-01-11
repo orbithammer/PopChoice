@@ -57,7 +57,8 @@ h2 {
     min-height: 5.5rem;
 }
 
-.app-screen button {
+.app-screen button,
+.app-screen a {
     color: #000C36;
     font-family: inherit;
     font-size: 1.875rem;
@@ -66,4 +67,19 @@ h2 {
     background-color: #51E08A;
     height: 4.4375rem;
     margin-top: 2.87rem;
+}
+
+.app-screen a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+/* .app-screen a:hover {
+    transform: translateY(2px);
+} */
+
+.app-screen a:active {
+    transform: translateY(2px);
 }
