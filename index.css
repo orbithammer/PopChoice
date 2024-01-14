@@ -57,7 +57,30 @@ h2 {
     min-height: 5.5rem;
 }
 
-.app-screen button,
+.app-screen .button-wrapper {
+    display: flex;
+    gap: 0.56rem
+}
+
+.button-selected {
+    background-color: #51E08A;
+    color: #000C36;
+}
+
+.button-not-selected {
+    color: #FFF;
+    background: #3B4877;
+}
+
+.button-selected,
+.button-not-selected {
+    height: 1.5625rem;
+    font-family: inherit;
+    font-size: 0.875rem;
+    border-radius: 0.3125rem;
+}
+
+.app-screen .get-movie-button,
 .app-screen a {
     color: #000C36;
     font-family: inherit;
@@ -75,10 +98,6 @@ h2 {
     justify-content: center;
     text-decoration: none;
 }
-
-/* .app-screen a:hover {
-    transform: translateY(2px);
-} */
 
 .app-screen a:active {
     transform: translateY(2px);
