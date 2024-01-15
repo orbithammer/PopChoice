@@ -68,8 +68,8 @@ h2 {
 }
 
 .button-not-selected {
+    background-color: #3B4877;
     color: #FFF;
-    background: #3B4877;
 }
 
 .button-selected,
@@ -81,7 +81,7 @@ h2 {
 }
 
 .app-screen .get-movie-button,
-.app-screen a {
+.app-screen .go-again-button {
     color: #000C36;
     font-family: inherit;
     font-size: 1.875rem;
@@ -92,7 +92,7 @@ h2 {
     margin-top: 2.87rem;
 }
 
-.app-screen a {
+.app-screen .go-again-button {
     display: flex;
     align-items: center;
     justify-content: center;

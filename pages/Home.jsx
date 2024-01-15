@@ -5,8 +5,8 @@ import { createClient } from "@supabase/supabase-js";
 import { useOutletContext } from "react-router-dom"
 
 export default function Home() {
-    const [favoriteInput, setFavoriteInput] = React.useState("")
-    const [moodInput, setMoodInput] = React.useState("")
+    const [favoriteInput, setFavoriteInput] = React.useState("Alien because it's always scary.")
+    const [moodInput, setMoodInput] = React.useState("I want to watch something fun.")
     const [isTimeNew, setIsTimeNew] = React.useState(true)
     const [isLooking, setIsLooking] = React.useState(false)
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY
@@ -38,7 +38,8 @@ export default function Home() {
             title: Title,
             year: Year,
             poster: Poster,
-            plot: Plot
+            plot: Plot,
+            imdbId
         })
     }
 
