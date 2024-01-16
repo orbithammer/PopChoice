@@ -1,17 +1,13 @@
 import React from "react"
 import { 
     useOutletContext,
-    NavLink,
-    Link
+    NavLink
 } from "react-router-dom"
 
 
 export default function Recommendation() {
     const {recommendation} = useOutletContext()
-    console.log("rec recommendation", recommendation)
     const {title, year, poster, plot, imdbId} = recommendation
-    console.log("rec", title, year, poster, plot, imdbId)
-    // console.log("imdbId", imdbId)
     return (
         <>
             <div className="app-screen">
